@@ -1,196 +1,301 @@
-COVID-19 India Portal API
-This project provides a RESTful API to manage COVID-19 data at the state and district levels in India. It allows users to fetch, update, and manage state and district data, such as cases, cured, active cases, and deaths. The application is built with Node.js, Express.js, and SQLite.
+# Covid-19 India Portal
 
-Features
-Authentication
+Given two files `app.js` and a database file `covid19IndiaPortal.db` consisting of three tables `state`, `district` and `user`.
 
-Implements JWT-based token authentication to secure routes.
-A /login/ endpoint to authenticate users.
-State Management
+Write APIs to perform operations on the tables `state`, `district` only after authentication of the user.
 
-Fetch all states: /states/
-Fetch a specific state by ID: /states/:stateId/
-Fetch aggregated statistics for a state: /states/:stateId/stats/
-District Management
+The columns of the tables are given below,
 
-Fetch district details: /districts/:districtId/
-Add a new district: /districts/
-Update district details: /districts/:districtId/
-Delete a district: /districts/:districtId/
-Technologies Used
-Backend: Node.js, Express.js
-Database: SQLite
-Authentication: JWT (JSON Web Token)
-Encryption: bcrypt
-Setup Instructions
-Prerequisites
-Node.js installed on your machine.
-SQLite installed.
-Clone the repository:
-bash
-Copy code
-git clone <repository-url>
-cd covid19-india-portal
-Installation
-Install dependencies:
+**State Table**
 
-bash
-Copy code
-npm install
-Create the database:
+| Columns    | Type    |
+| ---------- | ------- |
+| state_id   | INTEGER |
+| state_name | TEXT    |
+| population | INTEGER |
 
-Ensure the covid19IndiaPortal.db file is present in the project root directory.
-Import the required schema into the database.
-Start the server:
+**District Table**
 
-bash
-Copy code
-node index.js
-The server will run on http://localhost:3000/.
+| Columns       | Type    |
+| ------------- | ------- |
+| district_id   | INTEGER |
+| district_name | TEXT    |
+| state_id      | INTEGER |
+| cases         | INTEGER |
+| cured         | INTEGER |
+| active        | INTEGER |
+| deaths        | INTEGER |
 
-API Endpoints
-Authentication
-POST /login/
-Request Body:
-json
-Copy code
+You can use your previous code if required.
+
+#### Sample Valid User Credentials
+
+```
 {
-  "username": "user1",
-  "password": "password123"
+  "username": "christopher_phillips",
+  "password": "christy@123"
 }
-Response:
-json
-Copy code
-{
-  "jwtToken": "your-jwt-token"
-}
-State Endpoints
-GET /states/
+```
 
-Fetch all states.
-Response:
-json
-Copy code
+### API 1
+
+#### Path: `/login/`
+
+#### Method: `POST`
+
+**Request**
+
+```
+{
+  "username": "christopher_phillips",
+  "password": "christy@123"
+}
+```
+
+- **Scenario 1**
+
+  - **Description**:
+
+    If an unregistered user tries to login
+
+  - **Response**
+    - **Status code**
+      ```
+      400
+      ```
+    - **Body**
+      ```
+      Invalid user
+      ```
+
+- **Scenario 2**
+
+  - **Description**:
+
+    If the user provides an incorrect password
+
+  - **Response**
+    - **Status code**
+      ```
+      400
+      ```
+    - **Body**
+      ```
+      Invalid password
+      ```
+
+- **Scenario 3**
+
+  - **Description**:
+
+    Successful login of the user
+
+  - **Response**
+
+    Return the JWT Token
+
+    ```
+    {
+      "jwtToken": "ak2284ns8Di32......"
+    }
+    ```
+
+### Authentication with Token
+
+- **Scenario 1**
+
+  - **Description**:
+
+    If the token is not provided by the user or an invalid token
+
+  - **Response**
+    - **Status code**
+      ```
+      401
+      ```
+    - **Body**
+      ```
+      Invalid JWT Token
+      ```
+
+- **Scenario 2**
+  After successful verification of token proceed to next middleware or handler
+
+### API 2
+
+#### Path: `/states/`
+
+#### Method: `GET`
+
+#### Description:
+
+Returns a list of all states in the state table
+
+#### Response
+
+```
 [
   {
     "stateId": 1,
-    "stateName": "Andhra Pradesh",
-    "population": 5000000
+    "stateName": "Andaman and Nicobar Islands",
+    "population": 380581
   },
+
   ...
 ]
-GET /states/:stateId/
+```
 
-Fetch a specific state by ID.
-Response:
-json
-Copy code
+### API 3
+
+#### Path: `/states/:stateId/`
+
+#### Method: `GET`
+
+#### Description:
+
+Returns a state based on the state ID
+
+#### Response
+
+```
 {
-  "stateId": 1,
-  "stateName": "Andhra Pradesh",
-  "population": 5000000
+  "stateId": 8,
+  "stateName": "Delhi",
+  "population": 16787941
 }
-GET /states/:stateId/stats/
+```
 
-Fetch aggregated COVID-19 statistics for a state.
-Response:
-json
-Copy code
+### API 4
+
+#### Path: `/districts/`
+
+#### Method: `POST`
+
+#### Description:
+
+Create a district in the district table, `district_id` is auto-incremented
+
+#### Request
+
+```
 {
-  "totalCases": 100000,
-  "totalCured": 80000,
-  "totalActive": 15000,
-  "totalDeaths": 5000
+  "districtName": "Bagalkot",
+  "stateId": 3,
+  "cases": 2323,
+  "cured": 2000,
+  "active": 315,
+  "deaths": 8
 }
-District Endpoints
-GET /districts/:districtId/
+```
 
-Fetch details of a specific district.
-Response:
-json
-Copy code
+#### Response
+
+```
+District Successfully Added
+```
+
+### API 5
+
+#### Path: `/districts/:districtId/`
+
+#### Method: `GET`
+
+#### Description:
+
+Returns a district based on the district ID
+
+#### Response
+
+```
 {
-  "districtId": 1,
-  "districtName": "Guntur",
-  "stateId": 1,
-  "cases": 5000,
-  "cured": 4500,
-  "active": 400,
-  "deaths": 100
+  "districtId": 322,
+  "districtName": "Palakkad",
+  "stateId": 17,
+  "cases": 61558,
+  "cured": 59276,
+  "active": 2095,
+  "deaths": 177
 }
-POST /districts/
+```
 
-Add a new district.
-Request Body:
-json
-Copy code
+### API 6
+
+#### Path: `/districts/:districtId/`
+
+#### Method: `DELETE`
+
+#### Description:
+
+Deletes a district from the district table based on the district ID
+
+#### Response
+
+```
+District Removed
+
+```
+
+### API 7
+
+#### Path: `/districts/:districtId/`
+
+#### Method: `PUT`
+
+#### Description:
+
+Updates the details of a specific district based on the district ID
+
+#### Request
+
+```
 {
-  "stateId": 1,
-  "districtName": "Guntur",
-  "cases": 5000,
-  "cured": 4500,
-  "active": 400,
-  "deaths": 100
+  "districtName": "Nadia",
+  "stateId": 3,
+  "cases": 9628,
+  "cured": 6524,
+  "active": 3000,
+  "deaths": 104
 }
-Response:
-json
-Copy code
-"District Successfully Added"
-PUT /districts/:districtId/
+```
 
-Update details of a specific district.
-Request Body:
-json
-Copy code
+#### Response
+
+```
+
+District Details Updated
+
+```
+
+### API 8
+
+#### Path: `/states/:stateId/stats/`
+
+#### Method: `GET`
+
+#### Description:
+
+Returns the statistics of total cases, cured, active, deaths of a specific state based on state ID
+
+#### Response
+
+```
 {
-  "districtName": "Guntur",
-  "stateId": 1,
-  "cases": 6000,
-  "cured": 5500,
-  "active": 300,
-  "deaths": 200
+  "totalCases": 724355,
+  "totalCured": 615324,
+  "totalActive": 99254,
+  "totalDeaths": 9777
 }
-Response:
-json
-Copy code
-"District Details Updated"
-DELETE /districts/:districtId/
 
-Delete a specific district.
-Response:
-json
-Copy code
-"District Removed"
-Environment Variables
-The following environment variables are used in the application:
+```
 
-MY_SECRET_TOKEN: Secret key for JWT signing.
-Error Handling
-401 Unauthorized: Missing or invalid token.
-400 Bad Request: Invalid user credentials or data.
-500 Internal Server Error: Database or server issues.
-Database Schema
-User Table
-Column Name	Data Type
-id	INTEGER
-username	TEXT
-password	TEXT
-State Table
-Column Name	Data Type
-state_id	INTEGER
-state_name	TEXT
-population	INTEGER
-District Table
-Column Name	Data Type
-district_id	INTEGER
-district_name	TEXT
-state_id	INTEGER
-cases	INTEGER
-cured	INTEGER
-active	INTEGER
-deaths	INTEGER
-License
-This project is licensed under the MIT License.
+<br/>
+
+Use `npm install` to install the packages.
+
+**Export the express instance using the default export syntax.**
+
+**Use Common JS module syntax.**
+
 
 
 
