@@ -1,95 +1,100 @@
-.speedo-container {
+.speedometer-app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #07080c;
-  min-height: 100vh;
+  height: 100vh;
+}
+
+.speedometer-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
 .heading {
-  font-family: 'Roboto';
   color: #ffffff;
-  font-size: 20px;
+  font-family: 'Roboto';
+  font-size: 36px;
+  font-style: italic;
   font-weight: 500;
 }
 
 @media screen and (min-width: 768px) {
   .heading {
-    font-size: 40px;
+    font-size: 48px;
   }
 }
 
-.img-size {
-  max-width: 50%;
+.speedometer-image {
+  width: 300px;
+  height: 125px;
 }
 
-.display-meter {
-  font-family: 'Roboto';
+@media screen and (min-width: 768px) {
+  .speedometer-image {
+    width: 700px;
+    height: 300px;
+  }
+}
+
+.speed-text {
   color: #ffffff;
-  font-size: 20px;
+  font-family: 'Roboto';
+  font-size: 24px;
   font-weight: 500;
 }
 
 @media screen and (min-width: 768px) {
-  .display-meter {
-    font-size: 30px;
+  .speed-text {
+    font-size: 32px;
   }
 }
 
-.limit-description {
-  font-family: 'Roboto';
+.speed-limits {
   color: #cbd5e1;
-  font-size: 20px;
-  text-align: center;
-  min-width: 200px;
+  font-family: 'Roboto';
+  font-size: 12px;
+  margin-bottom: 48px;
 }
-
-@media screen and (max-width: 570px) {
-  .limit-description {
-    max-width: 200px;
-  }
-}
-
 @media screen and (min-width: 768px) {
-  .limit-description {
-    font-size: 30px;
+  .speed-limits {
+    font-size: 16px;
   }
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  border-radius: 8px;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 16px;
+  margin-left: 12px;
+  margin-right: 12px;
+  outline: none;
+  cursor: pointer;
 }
 
 .accelerate-button {
+  color: #ffffff;
   background-color: #0b69ff;
-  border-radius: 12px;
-  height: 50px;
-  width: 100px;
-  color: #ffffff;
-  border: 0px;
-  margin-right: 18px;
   font-family: 'Roboto';
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
 }
 
-@media screen and (min-width: 768px) {
-  .accelerate-button {
-    font-size: 20px;
-    width: 150px;
-    height: 60px;
-  }
-}
-
-.brake-button {
+.apply-brake-button {
+  color: #94a3b8;
   background-color: transparent;
-  color: #ffffff;
-  height: 50px;
-  width: 100px;
-  border-radius: 12px;
-  border: 2px solid #94a3b8;
   font-family: 'Roboto';
+  font-size: 12px;
+  font-weight: 500;
+  border: 2px solid #94a3b8;
 }
 
-@media screen and (min-width: 768px) {
-  .brake-button {
-    font-size: 20px;
-    width: 150px;
-    height: 60px;
-  }
-}
