@@ -48,4 +48,4 @@
 | **UPPER()** | `UPPER(col)` | Converts a string to **uppercase** |
 | **LOWER()** | `LOWER(col)` | Converts a string to **lowercase** |
 
-This structured format makes it easy to read and reference. Let me know if you need further modifications! 🚀
+
